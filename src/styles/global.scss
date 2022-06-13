@@ -1,0 +1,33 @@
+$primary: #3a7ca5;
+$text: #333;
+$muted: #999;
+$white: #fff;
+$light-grey: #f1f2f5;
+$black: #000;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+input,
+button,
+textarea,
+select {
+  outline: none;
+  border: none;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font: 400 1rem "Inter", sans-serif;
+}
+
+body {
+  color: $text;
+  background: $light-grey;
+}
