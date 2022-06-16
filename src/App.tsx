@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
+import { Toaster } from 'react-hot-toast';
 
 import { Header } from './components/Header';
 import { Task } from './components/Task';
+import { NewTaskModal } from './components/NewTaskModal';
 
 import './App.scss';
 import './styles/global.scss';
-import { NewTaskModal } from './components/NewTaskModal';
 
 interface Task {
   id: number,
@@ -37,7 +38,7 @@ const mockedTasks = [
 ]
 
 export function App() {
-  const [tasks, setTasks] = useState<Task[]>(mockedTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
 
   function handleOpenNewTaskModal() {
@@ -46,6 +47,10 @@ export function App() {
 
   function handleCloseNewTaskModal() {
     setIsNewTaskModalOpen(false);
+  }
+
+  function createNewTask(type: string, description: string) {
+    setTasks([...tasks, { id: tasks.length, type: type, description: description, isDone: false }]);
   }
 
   function switchTaskStatus(id: number) {
@@ -68,17 +73,14 @@ export function App() {
   }
 
   function deleteTask(id: number) {
-    let tempTasks = [...tasks];
-
-    tempTasks.filter(task => task.id === id);
-
-    setTasks(tempTasks);
+    setTasks(tasks.filter(task => task.id !== id));
   }
 
   Modal.setAppElement('#root');
 
   return (
     <div className='App'>
+      <div><Toaster /></div>
       <Header onOpenNewTaskModal={handleOpenNewTaskModal} />
       <div className='app-content'>
         {
@@ -97,6 +99,7 @@ export function App() {
       <NewTaskModal
         isOpen={isNewTaskModalOpen}
         onRequestClose={handleCloseNewTaskModal}
+        onCreateNewTask={createNewTask}
       />
     </div>
   )
