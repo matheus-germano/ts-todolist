@@ -26,6 +26,10 @@
   }
 
   .task-options {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
     svg {
       cursor: pointer;
       transition: .2s;

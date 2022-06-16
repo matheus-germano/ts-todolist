@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BsDashSquare, BsDashSquareFill } from 'react-icons/bs';
+import { AiFillEdit, AiFillDelete } from 'react-icons/ai';
+import { ImCheckboxChecked, ImCheckboxUnchecked } from 'react-icons/im';
 
 import './styles.scss';
 
@@ -31,10 +33,30 @@ export function Task({ task, switchTaskStatus, editTask, deleteTask }: TaskProps
         <p>{task.description}</p>
       </div>
       <div className='task-options'>
-        <BsDashSquareFill
+        {
+          task.isDone ?
+            <ImCheckboxChecked
+              color={'#0f0'}
+              onClick={() => switchTaskStatus(task.id)}
+              title="Desmarcar tarefa como feita"
+            /> :
+            <ImCheckboxUnchecked
+              color={'#333'}
+              onClick={() => switchTaskStatus(task.id)}
+              title="Marcar tarefa como feita"
+            />
+        }
+        <AiFillEdit
+          size={20}
+          color={'#3a7ca5'}
+          onClick={() => editTask(task.id)}
+          title="Editar tarefa"
+        />
+        <AiFillDelete
           size={20}
           color={'#f00'}
           onClick={() => deleteTask(task.id)}
+          title="Tarefa tarefa"
         />
       </div>
     </div>
