@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import Modal from 'react-modal';
 
 import { Header } from './components/Header';
 import { Task } from './components/Task';
 
 import './App.scss';
 import './styles/global.scss';
+import { NewTaskModal } from './components/NewTaskModal';
 
 interface Task {
   id: number,
@@ -36,6 +38,15 @@ const mockedTasks = [
 
 export function App() {
   const [tasks, setTasks] = useState<Task[]>(mockedTasks);
+  const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
+
+  function handleOpenNewTaskModal() {
+    setIsNewTaskModalOpen(true);
+  }
+
+  function handleCloseNewTaskModal() {
+    setIsNewTaskModalOpen(false);
+  }
 
   function switchTaskStatus(id: number) {
     let tempTasks = [...tasks];
@@ -57,7 +68,6 @@ export function App() {
   }
 
   function deleteTask(id: number) {
-    console.log('deleteTask');
     let tempTasks = [...tasks];
 
     tempTasks.filter(task => task.id === id);
@@ -65,9 +75,11 @@ export function App() {
     setTasks(tempTasks);
   }
 
+  Modal.setAppElement('#root');
+
   return (
     <div className='App'>
-      <Header />
+      <Header onOpenNewTaskModal={handleOpenNewTaskModal} />
       <div className='app-content'>
         {
           tasks && tasks.length > 0 ? (
@@ -81,6 +93,11 @@ export function App() {
           ) : <p>Nenhuma tarefa adicionada ate o momento.</p>
         }
       </div>
+
+      <NewTaskModal
+        isOpen={isNewTaskModalOpen}
+        onRequestClose={handleCloseNewTaskModal}
+      />
     </div>
   )
 }

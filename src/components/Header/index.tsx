@@ -3,7 +3,11 @@ import { BsPlusSquare, BsPlusSquareFill } from 'react-icons/bs';
 
 import './styles.scss';
 
-export function Header() {
+interface HeaderProps {
+  onOpenNewTaskModal: () => void;
+}
+
+export function Header({ onOpenNewTaskModal }: HeaderProps) {
   const [welcomeMessage, setWelcomeMessage] = useState('Bom dia!');
   const [isNewTaskButtonOnHover, setIsNewTaskButtonOnHover] = useState(false);
 
@@ -18,6 +22,7 @@ export function Header() {
       <div className="header-content">
         <h2>{welcomeMessage} Esta é sua todo list.</h2>
         <button
+          onClick={onOpenNewTaskModal}
           onMouseEnter={() => setIsNewTaskButtonOnHover(true)}
           onMouseLeave={() => setIsNewTaskButtonOnHover(false)}
           className='btn new-task'
