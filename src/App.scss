@@ -7,20 +7,57 @@
 
     display: flex;
     margin: 0 auto;
+    padding: 50px 0;
+
+    .tasks-wrapper {
+      width: 100%;
+      max-width: 1300px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      gap: 20px;
+      margin: 0 auto;
+
+      transform: translateY(-90px);
+    }
+
+    .empty-task-area {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+
+      img {
+        width: 256px;
+        animation: swing 2s infinite;
+      }
+    }
+  }
+}
+
+@keyframes swing {
+  20% {
+    transform: rotate(15deg);
   }
 
-  .tasks-wrapper {
-    width: 100%;
-    max-width: 1300px;
+  40% {
+    transform: rotate(-10deg);
+  }
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  60% {
+    transform: rotate(5deg);
+  }
 
-    gap: 20px;
-    margin: 0 auto;
+  80% {
+    transform: rotate(-5deg);
+  }
 
-    transform: translateY(-40px);
+  100% {
+    transform: rotate(0deg);
   }
 }
