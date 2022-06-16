@@ -4,7 +4,7 @@ import { BsDashSquare, BsDashSquareFill } from 'react-icons/bs';
 import './styles.scss';
 
 interface Task {
-  id: number,
+  id: string,
   type: string;
   description: string;
   isDone: boolean;
@@ -12,9 +12,9 @@ interface Task {
 
 interface TaskProps {
   task: Task;
-  switchTaskStatus: (id: number) => void;
-  editTask: (id: number) => void;
-  deleteTask: (id: number) => void;
+  switchTaskStatus: (id: string) => void;
+  editTask: (id: string) => void;
+  deleteTask: (id: string) => void;
 }
 
 export function Task({ task, switchTaskStatus, editTask, deleteTask }: TaskProps) {

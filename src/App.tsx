@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
 import { Toaster } from 'react-hot-toast';
+import { v4 as uuid } from 'uuid';
 
 import { Header } from './components/Header';
 import { Task } from './components/Task';
@@ -10,7 +11,7 @@ import './App.scss';
 import './styles/global.scss';
 
 interface Task {
-  id: number,
+  id: string,
   type: string;
   description: string;
   isDone: boolean;
@@ -50,10 +51,10 @@ export function App() {
   }
 
   function createNewTask(type: string, description: string) {
-    setTasks([...tasks, { id: tasks.length, type: type, description: description, isDone: false }]);
+    setTasks([...tasks, { id: uuid(), type: type, description: description, isDone: false }]);
   }
 
-  function switchTaskStatus(id: number) {
+  function switchTaskStatus(id: string) {
     let tempTasks = [...tasks];
 
     tempTasks.forEach((task, index) => {
@@ -68,11 +69,11 @@ export function App() {
     setTasks(tempTasks);
   }
 
-  function editTask(id: number) {
+  function editTask(id: string) {
 
   }
 
-  function deleteTask(id: number) {
+  function deleteTask(id: string) {
     setTasks(tasks.filter(task => task.id !== id));
   }
 
