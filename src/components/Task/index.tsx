@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsDashSquare, BsDashSquareFill } from 'react-icons/bs';
 
 import './styles.scss';
@@ -18,7 +18,11 @@ interface TaskProps {
 }
 
 export function Task({ task, switchTaskStatus, editTask, deleteTask }: TaskProps) {
-  const [image, setImage] = useState(`/src/assets/images/${task.type}.png`);
+  const [image, setImage] = useState('');
+
+  useEffect(() => {
+    setImage(`/src/assets/images/${task.type}.png`);
+  }, []);
 
   return (
     <div className='task-container'>
