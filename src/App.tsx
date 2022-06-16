@@ -7,6 +7,8 @@ import { Header } from './components/Header';
 import { Task } from './components/Task';
 import { NewTaskModal } from './components/NewTaskModal';
 
+import wind from './assets/images/wind.png';
+
 import './App.scss';
 import './styles/global.scss';
 
@@ -16,27 +18,6 @@ interface Task {
   description: string;
   isDone: boolean;
 }
-
-const mockedTasks = [
-  {
-    id: 0,
-    type: 'family',
-    description: 'Buscar Julia Maria no Shopping',
-    isDone: false,
-  },
-  {
-    id: 1,
-    type: 'pets',
-    description: 'Buscar Woody no PetShop',
-    isDone: false,
-  },
-  {
-    id: 2,
-    type: 'house',
-    description: 'Recolher lixos',
-    isDone: false,
-  },
-]
 
 export function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -93,7 +74,12 @@ export function App() {
                 ))
               }
             </div>
-          ) : <p>Nenhuma tarefa adicionada ate o momento.</p>
+          ) : (
+            <div className='empty-task-area'>
+              <h3>Nenhuma tarefa adicionada ate o momento.</h3>
+              <img src={wind} alt="" />
+            </div>
+          )
         }
       </div>
 
