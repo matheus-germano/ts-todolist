@@ -1,0 +1,54 @@
+@import '../../styles/global.scss';
+
+.header-container {
+  width: 100%;
+  height: 250px;
+
+  background: linear-gradient($primary, #2e6e96);
+  color: $white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .header-content {
+    width: 100%;
+    max-width: 1300px;
+    height: 100%;
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 20px 0;
+
+    .btn {
+      height: 20px;
+      background: transparent;
+      color: $white;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      cursor: pointer;
+      transition: .2s;
+
+      &:hover {
+        svg {
+          animation-name: rotatePlusIcon;
+          animation-duration: 1s;
+        }
+      }
+    }
+  }
+}
+
+@keyframes rotatePlusIcon {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
