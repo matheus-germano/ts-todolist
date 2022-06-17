@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { Toaster } from 'react-hot-toast';
 import { v4 as uuid } from 'uuid';
@@ -33,12 +33,20 @@ export function App() {
     setIsNewTaskModalOpen(false);
   }
 
+  function sortTasksByIsDone(tasks: Task[]) {
+    setTasks(tasks.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()).sort((a, b) => Number(a.isDone) - Number(b.isDone)));
+  }
+
   function createNewTask(type: string, description: string, dateLimit: string) {
+    let tempTasks = [...tasks];
     let thisDateLimit: Date | string = '';
 
     if (dateLimit !== '') thisDateLimit = new Date(dateLimit);
 
-    setTasks([...tasks, { id: uuid(), type: type, description: description, isDone: false, createdAt: new Date(), taskDeadline: thisDateLimit }]);
+    tempTasks.push({ id: uuid(), type: type, description: description, isDone: false, createdAt: new Date(), taskDeadline: thisDateLimit })
+
+    setTasks(tempTasks);
+    sortTasksByIsDone(tempTasks);
   }
 
   function switchTaskStatus(id: string) {
@@ -54,6 +62,7 @@ export function App() {
     });
 
     setTasks(tempTasks);
+    sortTasksByIsDone(tempTasks);
   }
 
   function editTask(id: string) {
@@ -61,7 +70,11 @@ export function App() {
   }
 
   function deleteTask(id: string) {
-    setTasks(tasks.filter(task => task.id !== id));
+    let tempTasks = [...tasks];
+    tempTasks = tempTasks.filter(task => task.id !== id);
+
+    setTasks(tempTasks);
+    sortTasksByIsDone(tempTasks);
   }
 
   Modal.setAppElement('#root');

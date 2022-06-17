@@ -26,7 +26,7 @@ export function Task({ task, switchTaskStatus, editTask, deleteTask }: TaskProps
 
   useEffect(() => {
     setImage(`/src/assets/images/${task.type}.png`);
-  }, []);
+  }, [task]);
 
   return (
     <div className='task-container'>

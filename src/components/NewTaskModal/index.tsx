@@ -53,18 +53,19 @@ export function NewTaskModal({ isOpen, onRequestClose, onCreateNewTask }: NewTas
     setTaskType('');
     setTaskDescription('');
     setTaskDeadline('');
+    setTaskHasDeadline(0);
   }
 
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={() => { onRequestClose(); setTaskType(''); setTaskDescription(''); setTaskDeadline(''); }}
+      onRequestClose={() => { onRequestClose(); setTaskType(''); setTaskDescription(''); setTaskDeadline(''); setTaskHasDeadline(0); }}
       contentLabel='Crie uma nova tarefa'
       overlayClassName='react-modal-overlay'
       className='react-modal-content'
     >
       <div className='new-task-modal-container'>
-        <FaTimes className='close-modal-btn' size={24} onClick={() => { onRequestClose(); setTaskType(''); setTaskDescription(''); setTaskDeadline(''); }} />
+        <FaTimes className='close-modal-btn' size={24} onClick={() => { onRequestClose(); setTaskType(''); setTaskDescription(''); setTaskDeadline(''); setTaskHasDeadline(0); }} />
         <div className="new-task-modal-header">
           <h2>Crie uma nova tarefa</h2>
         </div>
