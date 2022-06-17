@@ -53,4 +53,18 @@ body {
   padding: 2rem;
   position: relative;
   border-radius: 5px;
+
+  animation: .5s fade-in;
+}
+
+@keyframes fade-in {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
