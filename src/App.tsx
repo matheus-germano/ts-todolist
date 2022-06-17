@@ -25,6 +25,19 @@ export function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
 
+  useEffect(() => {
+    try {
+      let localTasks = JSON.parse(localStorage.getItem('tasks') || '');
+
+      if (localTasks.length > 0) {
+        localTasks.forEach((task: Task) => task.createdAt = new Date(task.createdAt));
+        setTasks(localTasks);
+      }
+    } catch (e) {
+      setTasks([]);
+    }
+  }, []);
+
   function handleOpenNewTaskModal() {
     setIsNewTaskModalOpen(true);
   }
@@ -34,7 +47,11 @@ export function App() {
   }
 
   function sortTasksByIsDone(tasks: Task[]) {
-    setTasks(tasks.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()).sort((a, b) => Number(a.isDone) - Number(b.isDone)));
+    let tempTasks = [...tasks];
+    tempTasks = tempTasks.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).sort((a, b) => Number(a.isDone) - Number(b.isDone));
+    setTasks(tempTasks);
+
+    localStorage.setItem('tasks', JSON.stringify(tempTasks));
   }
 
   function createNewTask(type: string, description: string, dateLimit: string) {
