@@ -46,6 +46,9 @@ export function NewTaskModal({ isOpen, onRequestClose, onCreateNewTask }: NewTas
     } else if (taskDescription.trim() === '') {
       toast.error('Por favor, descreva a tarefa');
       return;
+    } else if (taskHasDeadline === 1 && taskDeadline.trim() === '') {
+      toast.error('Por favor, selecione uma data limite');
+      return;
     }
 
     onCreateNewTask(taskType, taskDescription, taskDeadline);

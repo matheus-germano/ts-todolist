@@ -1,6 +1,12 @@
 @import './styles/global.scss';
 
 .App {
+  min-height: 100vh;
+  background: url(./assets/images/bg.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
   .app-content {
     width: 100%;
     max-width: 1300px;
