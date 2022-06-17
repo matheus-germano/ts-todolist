@@ -17,6 +17,8 @@ interface Task {
   type: string;
   description: string;
   isDone: boolean;
+  createdAt: Date;
+  taskDeadline: Date;
 }
 
 export function App() {
@@ -31,8 +33,8 @@ export function App() {
     setIsNewTaskModalOpen(false);
   }
 
-  function createNewTask(type: string, description: string) {
-    setTasks([...tasks, { id: uuid(), type: type, description: description, isDone: false }]);
+  function createNewTask(type: string, description: string, dateLimit: string) {
+    setTasks([...tasks, { id: uuid(), type: type, description: description, isDone: false, createdAt: new Date(), taskDeadline: new Date(dateLimit) }]);
   }
 
   function switchTaskStatus(id: string) {

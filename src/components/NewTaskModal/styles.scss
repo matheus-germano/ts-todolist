@@ -18,8 +18,18 @@
     justify-content: space-between;
   }
 
-  #taskDescription {
-    width: 100%;
+  .form-control {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    label {
+      font-weight: bold;
+    }
+  }
+
+  #taskDescription,
+  #taskDeadline {
     height: 40px;
 
     padding: 20px;

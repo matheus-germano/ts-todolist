@@ -25,18 +25,30 @@
     }
   }
 
-  .task-options {
+  .task-other-info {
     display: flex;
     align-items: center;
     gap: 20px;
 
-    svg {
-      cursor: pointer;
-      transition: .2s;
+    p {
+      border-right: 1px solid hsl(0, 0%, 80%);
+      padding: 0 20px;
+    }
 
-      &:hover {
-        filter: brightness(90%);
+    .task-options {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      svg {
+        cursor: pointer;
+        transition: .2s;
+
+        &:hover {
+          filter: brightness(90%);
+        }
       }
     }
   }
+
 }

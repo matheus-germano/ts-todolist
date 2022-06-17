@@ -10,6 +10,8 @@ interface Task {
   type: string;
   description: string;
   isDone: boolean;
+  createdAt: Date;
+  taskDeadline: Date;
 }
 
 interface TaskProps {
@@ -30,34 +32,37 @@ export function Task({ task, switchTaskStatus, editTask, deleteTask }: TaskProps
     <div className='task-container'>
       <div className='task-id'>
         <img src={image} alt={task.type} title={task.type} />
-        <p>{task.description}</p>
+        <p style={task.isDone ? { textDecoration: 'line-through' } : undefined}>{task.description}</p>
       </div>
-      <div className='task-options'>
-        {
-          task.isDone ?
-            <ImCheckboxChecked
-              color={'#0f0'}
-              onClick={() => switchTaskStatus(task.id)}
-              title="Desmarcar tarefa como feita"
-            /> :
-            <ImCheckboxUnchecked
-              color={'#333'}
-              onClick={() => switchTaskStatus(task.id)}
-              title="Marcar tarefa como feita"
-            />
-        }
-        <AiFillEdit
-          size={20}
-          color={'#3a7ca5'}
-          onClick={() => editTask(task.id)}
-          title="Editar tarefa"
-        />
-        <AiFillDelete
-          size={20}
-          color={'#f00'}
-          onClick={() => deleteTask(task.id)}
-          title="Tarefa tarefa"
-        />
+      <div className='task-other-info'>
+        <p className='task-deadline' style={task.isDone ? { textDecoration: 'line-through' } : undefined}>Realizar até {new Intl.DateTimeFormat('pt-BR').format(new Date(task.taskDeadline))}</p>
+        <div className='task-options'>
+          {
+            task.isDone ?
+              <ImCheckboxChecked
+                color={'#0f0'}
+                onClick={() => switchTaskStatus(task.id)}
+                title='Desmarcar tarefa como feita'
+              /> :
+              <ImCheckboxUnchecked
+                color={'#333'}
+                onClick={() => switchTaskStatus(task.id)}
+                title='Marcar tarefa como feita'
+              />
+          }
+          <AiFillEdit
+            size={20}
+            color={'#3a7ca5'}
+            onClick={() => editTask(task.id)}
+            title='Editar tarefa'
+          />
+          <AiFillDelete
+            size={20}
+            color={'#f00'}
+            onClick={() => deleteTask(task.id)}
+            title='Tarefa tarefa'
+          />
+        </div>
       </div>
     </div>
   );
