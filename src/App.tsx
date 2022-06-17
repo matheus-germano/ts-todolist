@@ -18,7 +18,7 @@ interface Task {
   description: string;
   isDone: boolean;
   createdAt: Date;
-  taskDeadline: Date;
+  taskDeadline: Date | string;
 }
 
 export function App() {
@@ -34,7 +34,11 @@ export function App() {
   }
 
   function createNewTask(type: string, description: string, dateLimit: string) {
-    setTasks([...tasks, { id: uuid(), type: type, description: description, isDone: false, createdAt: new Date(), taskDeadline: new Date(dateLimit) }]);
+    let thisDateLimit: Date | string = '';
+
+    if (dateLimit !== '') thisDateLimit = new Date(dateLimit);
+
+    setTasks([...tasks, { id: uuid(), type: type, description: description, isDone: false, createdAt: new Date(), taskDeadline: thisDateLimit }]);
   }
 
   function switchTaskStatus(id: string) {

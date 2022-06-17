@@ -31,9 +31,12 @@ const taskTypes = [
   },
 ];
 
+const taskHasDeadlineOptions = [{ value: 0, label: "Não" }, { value: 1, label: "Sim" }]
+
 export function NewTaskModal({ isOpen, onRequestClose, onCreateNewTask }: NewTaskModalProps) {
   const [taskType, setTaskType] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
+  const [taskHasDeadline, setTaskHasDeadline] = useState(0);
   const [taskDeadline, setTaskDeadline] = useState('');
 
   function verifyTaskCreationConditions() {
@@ -77,15 +80,29 @@ export function NewTaskModal({ isOpen, onRequestClose, onCreateNewTask }: NewTas
           />
         </div>
         <div className="form-control">
-          <label htmlFor="">Insira uma data limite</label>
-          <input
-            type='datetime-local'
-            name='taskDeadline'
-            id='taskDeadline'
-            value={taskDeadline}
-            onChange={(e) => setTaskDeadline(e.target.value)}
+          <label htmlFor="">Existe uma data limite para realização?</label>
+          <Select
+            options={taskHasDeadlineOptions}
+            isSearchable
+            placeholder='Existe data limite?'
+            defaultValue={taskHasDeadline !== undefined ? taskHasDeadlineOptions.filter(option => option.value === taskHasDeadline) : undefined}
+            onChange={e => e ? setTaskHasDeadline(e.value) : setTaskHasDeadline(0)}
           />
         </div>
+        {
+          taskHasDeadline === 1 && (
+            <div className="form-control">
+              <label htmlFor="">Insira uma data limite</label>
+              <input
+                type='datetime-local'
+                name='taskDeadline'
+                id='taskDeadline'
+                value={taskDeadline}
+                onChange={(e) => setTaskDeadline(e.target.value)}
+              />
+            </div>
+          )
+        }
         <div className="form-control">
           <label htmlFor="">Descreva sua tarefa</label>
           <input
