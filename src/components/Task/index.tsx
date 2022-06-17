@@ -35,7 +35,7 @@ export function Task({ task, switchTaskStatus, editTask, deleteTask }: TaskProps
         <p style={task.isDone ? { textDecoration: 'line-through' } : undefined}>{task.description}</p>
       </div>
       <div className='task-other-info'>
-        <p className='task-deadline' style={task.isDone ? { textDecoration: 'line-through' } : undefined}>Realizar até {new Intl.DateTimeFormat('pt-BR').format(new Date(task.taskDeadline))}</p>
+        <p className='task-deadline' style={task.isDone ? { textDecoration: 'line-through' } : undefined}>Realizar até {new Intl.DateTimeFormat('pt-BR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }).format(new Date(task.taskDeadline))}</p>
         <div className='task-options'>
           {
             task.isDone ?
