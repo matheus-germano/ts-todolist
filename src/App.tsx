@@ -24,6 +24,7 @@ interface Task {
 export function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState<Task | undefined>(undefined);
 
   useEffect(() => {
     try {
@@ -44,6 +45,7 @@ export function App() {
 
   function handleCloseNewTaskModal() {
     setIsNewTaskModalOpen(false);
+    setTaskToEdit(undefined);
   }
 
   function sortTasksByIsDone(tasks: Task[]) {
@@ -54,13 +56,13 @@ export function App() {
     localStorage.setItem('tasks', JSON.stringify(tempTasks));
   }
 
-  function createNewTask(type: string, description: string, dateLimit: string) {
+  function createNewTask(type: string, description: string, deadline: string) {
     let tempTasks = [...tasks];
-    let thisDateLimit: Date | string = '';
+    let thisDeadline: Date | string = '';
 
-    if (dateLimit !== '') thisDateLimit = new Date(dateLimit);
+    if (deadline !== '') thisDeadline = new Date(deadline);
 
-    tempTasks.push({ id: uuid(), type: type, description: description, isDone: false, createdAt: new Date(), taskDeadline: thisDateLimit })
+    tempTasks.push({ id: uuid(), type: type, description: description, isDone: false, createdAt: new Date(), taskDeadline: thisDeadline })
 
     setTasks(tempTasks);
     sortTasksByIsDone(tempTasks);
@@ -82,8 +84,23 @@ export function App() {
     sortTasksByIsDone(tempTasks);
   }
 
-  function editTask(id: string) {
+  function handleSwitchToEditTaskModal(id: string) {
+    setTaskToEdit(tasks[tasks.findIndex(task => task.id === id)]);
+    setIsNewTaskModalOpen(true);
+  }
 
+  function editTask(id: string, type: string, description: string, deadline: string) {
+    let tempTasks = [...tasks];
+    let taskIndex = tempTasks.findIndex(task => task.id === id)
+
+    let taskToEdit = { ...tempTasks[taskIndex] };
+    taskToEdit.type = type;
+    taskToEdit.description = description;
+    taskToEdit.taskDeadline = deadline;
+    tempTasks[taskIndex] = taskToEdit;
+
+    setTasks(tempTasks);
+    sortTasksByIsDone(tempTasks);
   }
 
   function deleteTask(id: string) {
@@ -106,7 +123,7 @@ export function App() {
             <div className='tasks-wrapper'>
               {
                 tasks.map((task, key) => (
-                  <Task key={key} task={task} switchTaskStatus={switchTaskStatus} editTask={editTask} deleteTask={deleteTask} />
+                  <Task key={key} task={task} switchTaskStatus={switchTaskStatus} onClickToEdit={handleSwitchToEditTaskModal} deleteTask={deleteTask} />
                 ))
               }
             </div>
@@ -123,6 +140,8 @@ export function App() {
         isOpen={isNewTaskModalOpen}
         onRequestClose={handleCloseNewTaskModal}
         onCreateNewTask={createNewTask}
+        onEditTask={editTask}
+        taskToEdit={taskToEdit}
       />
     </div>
   )

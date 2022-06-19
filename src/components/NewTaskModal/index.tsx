@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import Select from 'react-select';
 import { FaTimes } from 'react-icons/fa';
@@ -6,10 +6,21 @@ import toast from 'react-hot-toast';
 
 import './styles.scss';
 
+interface Task {
+  id: string,
+  type: string;
+  description: string;
+  isDone: boolean;
+  createdAt: Date;
+  taskDeadline: Date | string;
+}
+
 interface NewTaskModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
   onCreateNewTask: (type: string, description: string, dateLimit: string) => void;
+  onEditTask: (id: string, type: string, description: string, dateLimit: string) => void;
+  taskToEdit?: Task | undefined;
 }
 
 const taskTypes = [
@@ -33,13 +44,33 @@ const taskTypes = [
 
 const taskHasDeadlineOptions = [{ value: 0, label: "Não" }, { value: 1, label: "Sim" }]
 
-export function NewTaskModal({ isOpen, onRequestClose, onCreateNewTask }: NewTaskModalProps) {
+export function NewTaskModal({ isOpen, onRequestClose, onEditTask, onCreateNewTask, taskToEdit }: NewTaskModalProps) {
   const [taskType, setTaskType] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskHasDeadline, setTaskHasDeadline] = useState(0);
   const [taskDeadline, setTaskDeadline] = useState('');
 
-  function verifyTaskCreationConditions() {
+  useEffect(() => {
+    if (taskToEdit !== undefined) {
+      setTaskType(taskToEdit.type);
+      setTaskDescription(taskToEdit.description);
+      if (taskToEdit.taskDeadline !== '') {
+        setTaskHasDeadline(1);
+        setTaskDeadline(() => {
+          let formatedDate = '';
+          const fullDate = new Intl.DateTimeFormat('fr-ca', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }).format(new Date(taskToEdit.taskDeadline));
+          const date = fullDate.split(',')[0];
+          const time = fullDate.split(',')[1].split('h').join(':').replace(/\s/g, '');
+
+          formatedDate = date + 'T' + time;
+
+          return formatedDate;
+        });
+      };
+    }
+  }, [taskToEdit]);
+
+  function verifyTaskConditions() {
     if (taskType.trim() === '') {
       toast.error('Por favor, selecione um tipo de tarefa');
       return;
@@ -51,7 +82,12 @@ export function NewTaskModal({ isOpen, onRequestClose, onCreateNewTask }: NewTas
       return;
     }
 
-    onCreateNewTask(taskType, taskDescription, taskDeadline);
+    if (taskToEdit !== undefined) {
+      onEditTask(taskToEdit.id, taskType, taskDescription, taskDeadline);
+    } else {
+      onCreateNewTask(taskType, taskDescription, taskDeadline);
+    }
+
     onRequestClose();
     setTaskType('');
     setTaskDescription('');
@@ -70,7 +106,7 @@ export function NewTaskModal({ isOpen, onRequestClose, onCreateNewTask }: NewTas
       <div className='new-task-modal-container'>
         <FaTimes className='close-modal-btn' size={24} onClick={() => { onRequestClose(); setTaskType(''); setTaskDescription(''); setTaskDeadline(''); setTaskHasDeadline(0); }} />
         <div className="new-task-modal-header">
-          <h2>Crie uma nova tarefa</h2>
+          <h2>{taskToEdit !== undefined ? 'Edite sua tarefa' : 'Crie uma nova tarefa'}</h2>
         </div>
         <div className="form-control">
           <label htmlFor="">Selecione um tipo de tarefa</label>
@@ -79,7 +115,7 @@ export function NewTaskModal({ isOpen, onRequestClose, onCreateNewTask }: NewTas
             isClearable
             isSearchable
             placeholder='Tipo de tarefa'
-            defaultValue={taskType !== '' ? taskTypes.filter(task => task.value === taskType) : undefined}
+            defaultValue={taskToEdit !== undefined ? taskTypes.filter(task => task.value === taskToEdit.type) : undefined}
             onChange={e => e ? setTaskType(e.value) : setTaskType('')}
           />
         </div>
@@ -89,7 +125,7 @@ export function NewTaskModal({ isOpen, onRequestClose, onCreateNewTask }: NewTas
             options={taskHasDeadlineOptions}
             isSearchable
             placeholder='Existe data limite?'
-            defaultValue={taskHasDeadline !== undefined ? taskHasDeadlineOptions.filter(option => option.value === taskHasDeadline) : undefined}
+            defaultValue={taskToEdit !== undefined ? taskHasDeadlineOptions.filter(option => option.value === (taskToEdit.taskDeadline !== '' ? 1 : 0)) : undefined}
             onChange={e => e ? setTaskHasDeadline(e.value) : setTaskHasDeadline(0)}
           />
         </div>
@@ -120,8 +156,12 @@ export function NewTaskModal({ isOpen, onRequestClose, onCreateNewTask }: NewTas
         </div>
         <button
           className='new-task-btn'
-          onClick={verifyTaskCreationConditions}
-        >Criar tarefa</button>
+          onClick={verifyTaskConditions}
+        >
+          {
+            taskToEdit !== undefined ? 'Editar tarefa' : 'Criar tarefa'
+          }
+        </button>
       </div>
     </Modal>
   );

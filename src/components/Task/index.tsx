@@ -17,11 +17,11 @@ interface Task {
 interface TaskProps {
   task: Task;
   switchTaskStatus: (id: string) => void;
-  editTask: (id: string) => void;
+  onClickToEdit: (id: string) => void;
   deleteTask: (id: string) => void;
 }
 
-export function Task({ task, switchTaskStatus, editTask, deleteTask }: TaskProps) {
+export function Task({ task, switchTaskStatus, onClickToEdit, deleteTask }: TaskProps) {
   const [image, setImage] = useState('');
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export function Task({ task, switchTaskStatus, editTask, deleteTask }: TaskProps
           <AiFillEdit
             size={20}
             color={'#3a7ca5'}
-            onClick={() => editTask(task.id)}
+            onClick={() => onClickToEdit(task.id)}
             title='Editar tarefa'
           />
           <AiFillDelete
